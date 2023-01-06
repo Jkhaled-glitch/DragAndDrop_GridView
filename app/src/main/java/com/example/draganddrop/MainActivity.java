@@ -1,11 +1,14 @@
 package com.example.draganddrop;
 
+import androidx.annotation.IntegerRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.draganddrop.Adapter.MyRecyclerAdapter;
 import com.example.draganddrop.Helper.MyItemTouchHelperCallback;
@@ -36,17 +39,32 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         recyclerView.setLayoutManager(layoutManager);
     }
+
+
+
     private void generateItem(){
-        List<String> data = new ArrayList<>();
-        data.addAll(Arrays.asList(
-                "One","two", "Three",
-                "Four","Five", "Sex",
-                "Seven","Height", "Nine"
+        //Generate a data images pieces rondomize
+        List<Integer> datatmp = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
+
+        datatmp.addAll(Arrays.asList(
+                (R.drawable.p1),(R.drawable.p2), (R.drawable.p3),
+                (R.drawable.p4), (R.drawable.p5),(R.drawable.p6),
+                (R.drawable.p7),(R.drawable.p8), (R.drawable.p9)
         ));
+        int size = datatmp.size();
+        int rand;
+        for(int i = 0 ;i<size;i++){
+             rand = (int)(  Math.random() * (datatmp.size()));
+            data.add(  datatmp.get(rand)  );
+            datatmp.remove(rand);
+        }
+
 
         //Set Adapter
         MyRecyclerAdapter adapter = new MyRecyclerAdapter(this, data, viewHolder ->  {
             itemTouchHelper.startDrag(viewHolder);
+
         });
         recyclerView.setAdapter(adapter);
         ItemTouchHelper.Callback callback = new MyItemTouchHelperCallback(adapter);
